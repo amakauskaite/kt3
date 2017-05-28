@@ -12,6 +12,7 @@ namespace DijikstraConsole
         static void Main(string[] args)
         {
             Graph graph = new Graph();
+            CUI ui = new CUI();
 
             Router a = new Router('a');
             Router b = new Router('b');
@@ -28,6 +29,12 @@ namespace DijikstraConsole
             graph.addLink('d', 'a', 7);
             graph.deleteLink('a', 'd');
 
+            while(true)
+            {
+                int answer = ui.printCommands();
+                ui.switchStatement(answer, graph);
+            }
+
 
             //List<char> path = graph.shortest_path('a', 'd');//.ForEach(x => Console.WriteLine(x)); //spausdina kelia atvirkscia tvarka btw
             ////path.Add('a');
@@ -35,9 +42,23 @@ namespace DijikstraConsole
             //{
             //    Console.WriteLine(node);
             //}
-            a.fillTable(graph);
-            a.writeTable();
-            Console.ReadKey();
+            //a.fillTable(graph);
+            //a.writeTable(); //routing table
+            //a.writeNeighbours();
+            //Console.ReadKey();
+
+            /*
+             * TODO:
+             * *padaryti žinutės persiuntimą
+             * *padaryti, kad visų routerių lentelė būtų automatiškai užpildoma
+             * *padaryti, kad lentelė būtų automatiškai atnaujinama
+             * *padaryti žinutės peržiūrą
+             *+ UI!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+             * *pasveikinti Vytą su vyrų diena
+             * *paklausti, ar vos ištrynus/pridėjus kelią reikia atnaujinti lentelę
+             * That's all, folks!
+             */
+             
         }
     }
 }
