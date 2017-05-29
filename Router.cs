@@ -28,19 +28,23 @@ namespace Dijkstra
 
         public void fillTable (Graph graph)
         {
-            foreach (var variable in graph.routers)
-            {
-                if (variable.Key != name)
+            if (directLinks.Count != 0)
+                foreach (var variable in graph.routers)
                 {
-                    List<char> path = graph.shortest_path(name, variable.Key);
-                    path.Reverse();
-                    if (path.Count != 0)
-                        shortestPath.Add(variable.Key, path.First());
-                    else shortestPath.Add(variable.Key, '-');
+                    if (variable.Key != name)
+                    {
+                        List<char> path = graph.shortest_path(name, variable.Key);
+
+                        if (path != null && path.Count > 0)
+                        {
+                            path.Reverse();
+                            shortestPath.Add(variable.Key, path.First());
+                        }
+                        else shortestPath.Add(variable.Key, '-');
+                    }
+
                 }
-                
-            }
-            
+            //else Console.WriteLine("This router doesn't have neighbors yet");
         }
 
         public void writeTable()

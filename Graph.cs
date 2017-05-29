@@ -8,37 +8,54 @@ namespace Dijkstra
 {
     class Graph
     {
-       public Dictionary<char, Dictionary<char,int>> routers = new Dictionary<char, Dictionary<char, int>>();
+        public Dictionary<char, Dictionary<char,int>> routers = new Dictionary<char, Dictionary<char, int>>();
+        public List<Router> allrouters = new List<Router>();
 
-        public void addRouter (Router r)
+        public void addRouter (Router r, Graph graph)
         {
+            r.fillTable(graph);
             routers.Add(r.name, r.directLinks);
+            allrouters.Add(r);
+            
         }
 
         public void deleteRouter (Router r)
         {
             routers.Remove(r.name);
+            allrouters.Remove(r);
         }
 
         public void addLink (char r1, char r2, int dist)
         {
+            deleteLink(r1, r2);
             routers[r1].Add(r2, dist);
             routers[r2].Add(r1, dist);
+            //fillAllTables(graph);
         }
 
         public void deleteLink (char r1, char r2)
         {
             routers[r1].Remove(r2);
             routers[r2].Remove(r1);
+            //fillAllTables(graph);
         }
 
         public void printGraph ()
         {
             foreach(var r in routers)
             {
-                Console.WriteLine("Key = {0}, Value = {1}", r.Key, r.Value);
+                Console.WriteLine("Router {0}", r.Key);
             }
             //TODO: let's print! (hope it works!)
+        }
+
+        //pseudo filling, because these routers don't hold know the direct links - at least, doesn't have the newest versions of them
+        public void fillAllTables (Graph graph)
+        {   
+            foreach(var router in allrouters)
+            {
+                router.fillTable(graph);   
+            }
         }
 
         public List<char> shortest_path(char start, char finish)

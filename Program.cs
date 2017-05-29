@@ -17,11 +17,11 @@ namespace DijikstraConsole
             Router a = new Router('a');
             Router b = new Router('b');
             Router c = new Router('c');
-            graph.addRouter(a);
-            graph.addRouter(b);
-            graph.addRouter(c);
-            graph.addRouter(new Router('d'));
-            graph.addRouter(new Router('e'));
+            graph.addRouter(a, graph);
+            graph.addRouter(b, graph);
+            graph.addRouter(c, graph);
+            graph.addRouter(new Router('d'), graph);
+            graph.addRouter(new Router('e'), graph);
             graph.addLink('a', 'b', 5);
             graph.addLink('a', 'c', 6);
             graph.addLink('b', 'c', 1);
@@ -33,19 +33,9 @@ namespace DijikstraConsole
             {
                 int answer = ui.printCommands();
                 ui.switchStatement(answer, graph);
+                //could add a timer to renew tables
             }
 
-
-            //List<char> path = graph.shortest_path('a', 'd');//.ForEach(x => Console.WriteLine(x)); //spausdina kelia atvirkscia tvarka btw
-            ////path.Add('a');
-            //foreach(var node in path.AsEnumerable().Reverse())
-            //{
-            //    Console.WriteLine(node);
-            //}
-            //a.fillTable(graph);
-            //a.writeTable(); //routing table
-            //a.writeNeighbours();
-            //Console.ReadKey();
 
             /*
              * TODO:

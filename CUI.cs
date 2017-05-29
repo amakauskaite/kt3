@@ -20,7 +20,7 @@ namespace DijikstraConsole
             Console.WriteLine("5 - delete link");
             Console.WriteLine("6 - view router and his neighbors");
             Console.WriteLine("7 - view routing table of router");
-            Console.WriteLine("8 - send message");
+            Console.WriteLine("8 - see message path");
             Console.WriteLine("9 - bye bye");
             Console.ResetColor();
             return int.Parse(System.Console.ReadLine());
@@ -33,15 +33,17 @@ namespace DijikstraConsole
             {
                 case 1:
                     graph.printGraph();
+
                     break;
                 case 2:
                     Console.WriteLine("Please, write the name of router (1 letter only:)");
                     char name = char.Parse(System.Console.ReadLine());
 
                     if (!graph.routers.ContainsKey(name))
-                        graph.addRouter(new Router(name));
+                        graph.addRouter(new Router(name), graph);
                     else
                         Console.WriteLine("This router already exists");
+
                     break;
                 case 3:
                     Console.WriteLine("Please, write the name of router (1 letter only:)");
@@ -51,6 +53,7 @@ namespace DijikstraConsole
                         graph.deleteRouter(new Router(name));
                     else
                         Console.WriteLine("This router doesn't exist");
+
                     break;
                 case 4:
                     Console.WriteLine("Name of router 1:");
@@ -64,6 +67,7 @@ namespace DijikstraConsole
                         graph.addLink(name1, name2, dist);
                     else
                         Console.WriteLine("Whoopsie, something went wrong");
+
                     break;
                 case 5:
                     Console.WriteLine("Name of router 1:");
@@ -74,6 +78,7 @@ namespace DijikstraConsole
                         graph.deleteLink(name1, name2);
                     else
                         Console.WriteLine("Whoopsie, something went wrong");
+
                     break;
                 case 6:
                     Console.WriteLine("Name of router:");
@@ -81,6 +86,7 @@ namespace DijikstraConsole
                     Dictionary<char, int> links = graph.routers[name];
                     Router router = new Router(name, links);
                     router.writeNeighbours();
+
                     break;
                 case 7:
                     Console.WriteLine("Name of router:");
@@ -89,24 +95,27 @@ namespace DijikstraConsole
                     router = new Router(name, links);
                     router.fillTable(graph);
                     router.writeTable();
+
                     break;
                 case 8:
-                    Console.WriteLine("~message:~");
-                    string message = System.Console.ReadLine();
-                    Console.WriteLine("~to which router~:");
-                    name = char.Parse(System.Console.ReadLine());
-                    Console.WriteLine("and now you can dream about me sending the message ggwp");
+                    Console.WriteLine("Name of router 1:");
+                    name1 = char.Parse(System.Console.ReadLine());
+                    Console.WriteLine("Name of router 2:");
+                    name2 = char.Parse(System.Console.ReadLine());
+                    var path = graph.shortest_path(name1, name2);
+                    path.Reverse();
+                    System.Console.WriteLine("~Path (if there is one):~");
+                    path.ForEach(x => Console.WriteLine(x));
+
                     break;
                 case 9:
                     Console.WriteLine("bye bye~~");
                     Console.ReadKey();
-                    Console.Beep();
-                    //Console.Beep();
-                    //Console.Beep();
                     Environment.Exit(0);
                     break;
                 default:
                     Console.WriteLine("Wrong input, try again lololol");
+
                     break;
             }
 
