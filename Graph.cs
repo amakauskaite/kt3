@@ -8,36 +8,41 @@ namespace Dijkstra
 {
     class Graph
     {
-        public Dictionary<char, Dictionary<char,int>> routers = new Dictionary<char, Dictionary<char, int>>();
-        public List<Router> allrouters = new List<Router>();
+        //public Dictionary<char, Dictionary<char,int>> routers = new Dictionary<char, Dictionary<char, int>>();
+        public Dictionary<char, Router> routers = new Dictionary<char, Router>();
 
         public void addRouter (Router r, Graph graph)
         {
             r.fillTable(graph);
-            routers.Add(r.name, r.directLinks);
-            allrouters.Add(r);
+            routers.Add(r.name, r);
             
         }
 
-        public void deleteRouter (Router r)
+        public void deleteRouter (Router r, Graph graph)
         {
             routers.Remove(r.name);
-            allrouters.Remove(r);
+            //panaikinti direct linkus reik irgi!
+            foreach (var router in routers )
+            {
+                if(router.Value.directLinks.ContainsKey(r.name))
+                {
+                    router.Value.directLinks.Remove(r.name);
+                }
+            }
+            fillAllTables(graph);
         }
 
         public void addLink (char r1, char r2, int dist)
         {
             deleteLink(r1, r2);
-            routers[r1].Add(r2, dist);
-            routers[r2].Add(r1, dist);
-            //fillAllTables(graph);
+            routers[r1].directLinks.Add(r2, dist);
+            routers[r2].directLinks.Add(r1, dist);
         }
 
         public void deleteLink (char r1, char r2)
         {
-            routers[r1].Remove(r2);
-            routers[r2].Remove(r1);
-            //fillAllTables(graph);
+            routers[r1].directLinks.Remove(r2);
+            routers[r2].directLinks.Remove(r1);
         }
 
         public void printGraph ()
@@ -50,11 +55,12 @@ namespace Dijkstra
         }
 
         //pseudo filling, because these routers don't hold know the direct links - at least, doesn't have the newest versions of them
+        //JUST IN: NORMAL FILLING~!!
         public void fillAllTables (Graph graph)
         {   
-            foreach(var router in allrouters)
+            foreach(var router in routers)
             {
-                router.fillTable(graph);   
+                router.Value.fillTable(graph);   
             }
         }
 
@@ -104,7 +110,7 @@ namespace Dijkstra
                     break;
                 }
 
-                foreach (var neighbor in routers[smallest])
+                foreach (var neighbor in routers[smallest].directLinks)
                 {
                     var alt = distances[smallest] + neighbor.Value;
                     if (alt < distances[neighbor.Key])

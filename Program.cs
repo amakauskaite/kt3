@@ -28,6 +28,7 @@ namespace DijikstraConsole
             graph.addLink('b', 'd', 2);
             graph.addLink('d', 'a', 7);
             graph.deleteLink('a', 'd');
+            graph.fillAllTables(graph);
 
             while(true)
             {
@@ -40,13 +41,8 @@ namespace DijikstraConsole
             /*
              * TODO:
              * *padaryti žinutės persiuntimą
-             * *padaryti, kad visų routerių lentelė būtų automatiškai užpildoma
              * *padaryti, kad lentelė būtų automatiškai atnaujinama
              * *padaryti žinutės peržiūrą
-             *+ UI!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-             * *pasveikinti Vytą su vyrų diena
-             * *paklausti, ar vos ištrynus/pridėjus kelią reikia atnaujinti lentelę
-             * That's all, folks!
              */
              
         }

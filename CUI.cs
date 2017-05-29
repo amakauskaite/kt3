@@ -11,7 +11,7 @@ namespace DijikstraConsole
     {
         public int printCommands()
         {
-            Console.BackgroundColor = ConsoleColor.Blue;
+            Console.BackgroundColor = ConsoleColor.DarkRed;
             Console.WriteLine("Hello, please choose one of the following:");
             Console.WriteLine("1 - list of all routers");
             Console.WriteLine("2 - add router");
@@ -23,7 +23,15 @@ namespace DijikstraConsole
             Console.WriteLine("8 - see message path");
             Console.WriteLine("9 - bye bye");
             Console.ResetColor();
-            return int.Parse(System.Console.ReadLine());
+            try
+            {
+                return int.Parse(System.Console.ReadLine());
+            }
+            
+            catch
+            {
+                return 0;
+            }
 
         }
 
@@ -50,7 +58,7 @@ namespace DijikstraConsole
                     name = char.Parse(System.Console.ReadLine());
 
                     if (graph.routers.ContainsKey(name))
-                        graph.deleteRouter(new Router(name));
+                        graph.deleteRouter(new Router(name), graph);
                     else
                         Console.WriteLine("This router doesn't exist");
 
@@ -83,18 +91,14 @@ namespace DijikstraConsole
                 case 6:
                     Console.WriteLine("Name of router:");
                     name = char.Parse(System.Console.ReadLine());
-                    Dictionary<char, int> links = graph.routers[name];
-                    Router router = new Router(name, links);
-                    router.writeNeighbours();
+                    graph.routers[name].writeNeighbours();
 
                     break;
                 case 7:
                     Console.WriteLine("Name of router:");
                     name = char.Parse(System.Console.ReadLine());
-                    links = graph.routers[name];
-                    router = new Router(name, links);
-                    router.fillTable(graph);
-                    router.writeTable();
+                    graph.routers[name].fillTable(graph);
+                    graph.routers[name].writeTable();
 
                     break;
                 case 8:
@@ -102,12 +106,20 @@ namespace DijikstraConsole
                     name1 = char.Parse(System.Console.ReadLine());
                     Console.WriteLine("Name of router 2:");
                     name2 = char.Parse(System.Console.ReadLine());
-                    var path = graph.shortest_path(name1, name2);
-                    path.Reverse();
-                    System.Console.WriteLine("~Path (if there is one):~");
-                    path.ForEach(x => Console.WriteLine(x));
-
-                    break;
+                    try
+                    {
+                        var path = graph.shortest_path(name1, name2);
+                        path.Reverse();
+                        System.Console.WriteLine("~Path (if there is one):~");
+                        path.ForEach(x => Console.WriteLine(x));
+                        break;
+                    }
+                    catch
+                    {
+                        Console.WriteLine("The posibility, that you did something wrong, is high in this one m8");
+                        break;
+                    }
+                   
                 case 9:
                     Console.WriteLine("bye bye~~");
                     Console.ReadKey();

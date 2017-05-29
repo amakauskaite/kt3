@@ -38,9 +38,16 @@ namespace Dijkstra
                         if (path != null && path.Count > 0)
                         {
                             path.Reverse();
-                            shortestPath.Add(variable.Key, path.First());
+                            if (!shortestPath.ContainsKey(variable.Key))
+                                shortestPath.Add(variable.Key, path.First());
+                            else if (shortestPath[variable.Key] != path.First())
+                                shortestPath[variable.Key] = path.First();
+                            //shortestPath.Add(variable.Key, path.First());
                         }
-                        else shortestPath.Add(variable.Key, '-');
+                        else if (!shortestPath.ContainsKey(variable.Key))
+                            shortestPath.Add(variable.Key, '-');
+                        else
+                            shortestPath[variable.Key] = '-';
                     }
 
                 }
