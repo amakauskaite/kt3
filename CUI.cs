@@ -9,6 +9,7 @@ namespace DijikstraConsole
 {
     class CUI
     {
+        char name, name1, name2;
         public int printCommands()
         {
             Console.BackgroundColor = ConsoleColor.DarkRed;
@@ -45,16 +46,26 @@ namespace DijikstraConsole
                     break;
                 case 2:
                     Console.WriteLine("Please, write the name of router (1 letter only:)");
-                    char name = char.Parse(System.Console.ReadLine());
+                    try
+                    {
+                        name = char.Parse(System.Console.ReadLine());
 
-                    if (!graph.routers.ContainsKey(name))
-                        graph.addRouter(new Router(name), graph);
-                    else
-                        Console.WriteLine("This router already exists");
+                        if (!graph.routers.ContainsKey(name))
+                            graph.addRouter(new Router(name), graph);
+                        else
+                            Console.WriteLine("This router already exists");
 
-                    break;
+                        break;
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Invalid input");
+                        break;
+                    }
                 case 3:
                     Console.WriteLine("Please, write the name of router (1 letter only:)");
+                    try
+                    {
                     name = char.Parse(System.Console.ReadLine());
 
                     if (graph.routers.ContainsKey(name))
@@ -63,60 +74,107 @@ namespace DijikstraConsole
                         Console.WriteLine("This router doesn't exist");
 
                     break;
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Invalid input");
+                        break;
+                    }
+                    
                 case 4:
-                    Console.WriteLine("Name of router 1:");
-                    char name1 = char.Parse(System.Console.ReadLine());
-                    Console.WriteLine("Name of router 2:");
-                    char name2 = char.Parse(System.Console.ReadLine());
-                    Console.WriteLine("Distance between the two:");
-                    int dist = int.Parse(System.Console.ReadLine());
-
-                    if (graph.routers.ContainsKey(name1) && graph.routers.ContainsKey(name2))
-                        graph.addLink(name1, name2, dist);
-                    else
-                        Console.WriteLine("Whoopsie, something went wrong");
-
-                    break;
-                case 5:
-                    Console.WriteLine("Name of router 1:");
-                    name1 = char.Parse(System.Console.ReadLine());
-                    Console.WriteLine("Name of router 2:");
-                    name2 = char.Parse(System.Console.ReadLine());
-                    if (graph.routers.ContainsKey(name1) && graph.routers.ContainsKey(name2))
-                        graph.deleteLink(name1, name2);
-                    else
-                        Console.WriteLine("Whoopsie, something went wrong");
-
-                    break;
-                case 6:
-                    Console.WriteLine("Name of router:");
-                    name = char.Parse(System.Console.ReadLine());
-                    graph.routers[name].writeNeighbours();
-
-                    break;
-                case 7:
-                    Console.WriteLine("Name of router:");
-                    name = char.Parse(System.Console.ReadLine());
-                    graph.routers[name].fillTable(graph);
-                    graph.routers[name].writeTable();
-
-                    break;
-                case 8:
-                    Console.WriteLine("Name of router 1:");
-                    name1 = char.Parse(System.Console.ReadLine());
-                    Console.WriteLine("Name of router 2:");
-                    name2 = char.Parse(System.Console.ReadLine());
                     try
                     {
-                        var path = graph.shortest_path(name1, name2);
-                        path.Reverse();
-                        System.Console.WriteLine("~Path (if there is one):~");
-                        path.ForEach(x => Console.WriteLine(x));
+                        Console.WriteLine("Name of router 1:");
+                        char name1 = char.Parse(System.Console.ReadLine());
+                        Console.WriteLine("Name of router 2:");
+                        char name2 = char.Parse(System.Console.ReadLine());
+                        Console.WriteLine("Distance between the two:");
+                        int dist = int.Parse(System.Console.ReadLine());
+
+                        if (graph.routers.ContainsKey(name1) && graph.routers.ContainsKey(name2))
+                            graph.addLink(name1, name2, dist, graph);
+                        else
+                            Console.WriteLine("Whoopsie, something went wrong");
+
                         break;
                     }
                     catch
                     {
-                        Console.WriteLine("The posibility, that you did something wrong, is high in this one m8");
+                        Console.WriteLine("Invalid input");
+                        break;
+                    }
+                case 5:
+                    try
+                    {
+                        Console.WriteLine("Name of router 1:");
+                        name1 = char.Parse(System.Console.ReadLine());
+                        Console.WriteLine("Name of router 2:");
+                        name2 = char.Parse(System.Console.ReadLine());
+                        if (graph.routers.ContainsKey(name1) && graph.routers.ContainsKey(name2))
+                            graph.deleteLink(name1, name2, graph);
+                        else
+                            Console.WriteLine("Whoopsie, something went wrong");
+
+                        break;
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Invalid input");
+                        break;
+                    }
+                case 6:
+                    try
+                    {
+                        Console.WriteLine("Name of router:");
+                        name = char.Parse(System.Console.ReadLine());
+                        graph.routers[name].writeNeighbours();
+
+                        break;
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Invalid input");
+                        break;
+                    }
+                case 7:
+                    try
+                    {
+                        Console.WriteLine("Name of router:");
+                        name = char.Parse(Console.ReadLine());
+                        graph.routers[name].fillTable(graph);
+                        graph.routers[name].writeTable(graph);
+
+                        break;
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Invalid input");
+                        break;
+                    }
+                case 8:
+                    try
+                    {
+                        Console.WriteLine("Name of router 1:");
+                        name1 = char.Parse(System.Console.ReadLine());
+                        Console.WriteLine("Name of router 2:");
+                        name2 = char.Parse(System.Console.ReadLine());
+                        try
+                        {
+                            var path = graph.shortest_path(name1, name2);
+                            path.Reverse();
+                            System.Console.WriteLine("~Path (if there is one):~");
+                            path.ForEach(x => Console.WriteLine(x));
+                            break;
+                        }
+                        catch
+                        {
+                            Console.WriteLine("The posibility, that you did something wrong, is high in this one m8");
+                            break;
+                        }
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Invalid input");
                         break;
                     }
                    

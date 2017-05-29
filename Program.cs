@@ -22,12 +22,12 @@ namespace DijikstraConsole
             graph.addRouter(c, graph);
             graph.addRouter(new Router('d'), graph);
             graph.addRouter(new Router('e'), graph);
-            graph.addLink('a', 'b', 5);
-            graph.addLink('a', 'c', 6);
-            graph.addLink('b', 'c', 1);
-            graph.addLink('b', 'd', 2);
-            graph.addLink('d', 'a', 7);
-            graph.deleteLink('a', 'd');
+            graph.addLink('a', 'b', 5, graph);
+            graph.addLink('a', 'c', 6, graph);
+            graph.addLink('b', 'c', 1, graph);
+            graph.addLink('b', 'd', 2, graph);
+            graph.addLink('d', 'a', 7, graph);
+            graph.deleteLink('a', 'd', graph);
             graph.fillAllTables(graph);
 
             while(true)

@@ -15,34 +15,49 @@ namespace Dijkstra
         {
             r.fillTable(graph);
             routers.Add(r.name, r);
+            fillAllTables(graph);
             
         }
 
         public void deleteRouter (Router r, Graph graph)
         {
             routers.Remove(r.name);
-            //panaikinti direct linkus reik irgi!
+            //dar reikia panaikinti shortestPath, jei buvo, kad i ta routeri!
+
             foreach (var router in routers )
             {
+                
                 if(router.Value.directLinks.ContainsKey(r.name))
-                {
                     router.Value.directLinks.Remove(r.name);
-                }
+                if (router.Value.shortestPath.ContainsKey(r.name))
+                    router.Value.shortestPath.Remove(router.Key);
+                //router.Value.fillTable(graph);
+                
             }
+
+            //foreach (var path in r.shortestPath)
+            //{
+            //    if (!(graph.routers.Values.First().name == path.Key))
+            //    {
+            //        r.shortestPath.Remove(path.Key);
+            //    }
+            //}
             fillAllTables(graph);
         }
 
-        public void addLink (char r1, char r2, int dist)
+        public void addLink (char r1, char r2, int dist, Graph graph)
         {
-            deleteLink(r1, r2);
+            deleteLink(r1, r2, graph);
             routers[r1].directLinks.Add(r2, dist);
             routers[r2].directLinks.Add(r1, dist);
+            fillAllTables(graph);
         }
 
-        public void deleteLink (char r1, char r2)
+        public void deleteLink (char r1, char r2, Graph graph)
         {
             routers[r1].directLinks.Remove(r2);
             routers[r2].directLinks.Remove(r1);
+            fillAllTables(graph);
         }
 
         public void printGraph ()
@@ -51,11 +66,8 @@ namespace Dijkstra
             {
                 Console.WriteLine("Router {0}", r.Key);
             }
-            //TODO: let's print! (hope it works!)
         }
 
-        //pseudo filling, because these routers don't hold know the direct links - at least, doesn't have the newest versions of them
-        //JUST IN: NORMAL FILLING~!!
         public void fillAllTables (Graph graph)
         {   
             foreach(var router in routers)

@@ -34,7 +34,6 @@ namespace Dijkstra
                     if (variable.Key != name)
                     {
                         List<char> path = graph.shortest_path(name, variable.Key);
-
                         if (path != null && path.Count > 0)
                         {
                             path.Reverse();
@@ -44,6 +43,7 @@ namespace Dijkstra
                                 shortestPath[variable.Key] = path.First();
                             //shortestPath.Add(variable.Key, path.First());
                         }
+                        
                         else if (!shortestPath.ContainsKey(variable.Key))
                             shortestPath.Add(variable.Key, '-');
                         else
@@ -52,13 +52,23 @@ namespace Dijkstra
 
                 }
             //else Console.WriteLine("This router doesn't have neighbors yet");
+
+            //foreach (var path in shortestPath)
+            //{
+            //    //jei grafe nëra value, kurio key yra path.key, tai já reik iðtrit ið shortest path
+            //    if ()
+            //    {
+
+            //    }
+            //}
         }
 
-        public void writeTable()
+        public void writeTable(Graph graph)
         {
             Console.WriteLine("Router {0} table is as follows:", name);
             foreach (var element in shortestPath)
             {
+                if (graph.routers.ContainsKey(element.Key))
                 Console.WriteLine("Destintion = {0}, Next router => {1}", element.Key, element.Value);
             }
         }
